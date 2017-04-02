@@ -82,7 +82,12 @@ module.exports = class Renderer
         return path.format(obj);
     }
 
-
+    /**
+     * 
+     * @param {*} script 
+     * @param {*} options 
+     * @param {*} callback 
+     */
     static __express(script, options, callback) {
         let renderer = new this();
 
