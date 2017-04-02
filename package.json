@@ -1,0 +1,15 @@
+{
+  "name": "es-renderer-vue",
+  "version": "1.0.0",
+  "description": "View renderer engine using Vue JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^2.2.6",
+    "vue-server-renderer": "^2.2.6"
+  }
+}
