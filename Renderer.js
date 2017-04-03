@@ -6,11 +6,11 @@ var Parser = require('./Parser');
  * Renderer class
  * @todo support for streaming
  */
-module.exports = class Renderer 
+class Renderer 
 {
     constructor(options = {}) {
         let defaults = {
-            dir: null,
+            views: null,
             ext: 'html'
         }
 
@@ -23,7 +23,7 @@ module.exports = class Renderer
      * @param {string} script 
      * @param {Object} data 
      */
-    async render(script, data = {}, callback = null) {
+    async render(script, data = {}) {
         try {
             // render the main view
             let content = await this.renderScript(script);
@@ -36,7 +36,7 @@ module.exports = class Renderer
                 content = await this.renderScript(layoutScript);
                 content = await this.parser.parse(content, data);
             }
-            if(callback) callback(content);
+
             return content;
         } catch(e) {
             throw e;
@@ -67,7 +67,7 @@ module.exports = class Renderer
         if(path.isAbsolute(script)) return script;
 
         let obj = {
-            dir: this.options.dir
+            dir: this.options.views
         }
 
         if(path.extname(script)) {
@@ -83,16 +83,19 @@ module.exports = class Renderer
     }
 
     /**
+     * Provide Epxress JS native renderer function 
      * 
      * @param {*} script 
      * @param {*} options 
      * @param {*} callback 
      */
-    static __express(script, options, callback) {
-        let renderer = new this();
+    static __express(filePath, options, callback) {
+        let renderer = new Renderer(options);
 
-        return function(script, data, callback) {
-            renderer.render(script, data, callback);
-        }.bind(renderer);
+        renderer.render(filePath, options)
+            .then( content => callback(null, content))
+            .catch( err => callback(err));
     }
 }
+
+module.exports = Renderer;
